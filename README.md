@@ -25,4 +25,7 @@ Construye la aplicacion en producción. Esta se aloja en la carpeta `build`.\
 
 
 # Levanta un contenedor con Docker
- 
+
+Levanta un contenedor de la aplicación
+
+### `docker compose up`
