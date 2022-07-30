@@ -1,42 +1,23 @@
 import React from "react";
-import IconButton from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
-
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEllipsisVertical,
+  faEdit,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { deleteCustomer } from "../../api/Customer";
 import { mostrarExito, mostrarAlertaEliminar } from "../Alert/Alert";
 
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
 
 // eslint-disable-next-line react/prop-types, import/no-anonymous-default-export
 export default ({ row, onDeleteRow, size }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
 
-  const handleOpenModal = () => setOpen(true);
-  const handleCloseModal = () => setOpen(false);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const editRow = () => {
-    console.log("editRow", row);
-    //editCustomerAlert(row, '');
+    localStorage.setItem("customer", JSON.stringify(row));
+    window.location.reload(); 
   };
   const deleteRow = async () => {
-    setAnchorEl(null);
     if (await mostrarAlertaEliminar("Cliente")) {
       let id = row.id;
       let _delete = await deleteCustomer(id);
@@ -55,86 +36,47 @@ export default ({ row, onDeleteRow, size }) => {
     }
   };
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 700,
-    "border-radius": "5px",
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    pt: 2,
-    pb: 3,
-  };
-
   return (
     <div>
-      <IconButton
-        aria-label="more"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        size={size}
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <Menu
-        id="menu"
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleOpenModal}>
-          <ListItemIcon>
-            <EditIcon fontSize="small" color="secondary" />
-          </ListItemIcon>
-          <Typography variant="inherit">Editar</Typography>
-        </MenuItem>
-        <Modal
-          open={open}
-          onClose={handleCloseModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={{ ...style, width: 500 }}>
-            <Typography variant="h6" className="pl-4 font-semibold">
-              Editar datos del cliente
-            </Typography>
-            <Divider />
-            <form>
-              <div className="form-group px-4 mb-4">
-                <Typography variant="h6">Correo electrónico:</Typography>
-                <input
-                  type="email"
-                  name="correo"
-                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  id="email"
-                  placeholder="Ingrese su correo electrónico"
-                />
-              </div>
-            </form>
-          </Box>
-        </Modal>
-
-        <Divider />
-
-        <MenuItem onClick={deleteRow}>
-          <ListItemIcon>
-            <DeleteIcon fontSize="small" color="secondary" />
-          </ListItemIcon>
-          <Typography variant="inherit">Eliminar</Typography>
-        </MenuItem>
-      </Menu>
+      <div className="flex justify-center">
+        <div>
+          <div className="dropstart relative">
+            <button
+              className=" dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton1s"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+            </button>
+            <ul
+              className=" dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none
+        "
+              aria-labelledby="dropdownMenuButton1s"
+            >
+              <li>
+                <a onClick={editRow}
+                  className=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                  href="#!"
+                >
+                  <FontAwesomeIcon icon={faEdit} /> Editar cliente
+                </a>
+              </li>
+              <li>
+                <a
+                  className=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100
+            "
+                  onClick={deleteRow}
+                  href="#!"
+                >
+                  <FontAwesomeIcon icon={faTrash} /> Eliminar cliente
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

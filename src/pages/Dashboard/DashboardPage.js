@@ -7,10 +7,12 @@ import PointComponent from "../../components/Table/PointComponent";
 import logo from "../../Resource/logo.svg";
 import Modal from "../../components/ModalCliente/Modal";
 import Table from "../../components/Table/Table";
+import EditCustomerPage from "../EditCustomerPage/EditCustomerPage";
 const Dashboard = () => {
   const [user, setUser] = useState({});
   const [cargando, setCargando] = useState(true);
   const [customers, setCustomers] = useState([]);
+  const [customer, setCustomer] = useState(null);
   const columns = [
     {
       name: "Id",
@@ -74,6 +76,7 @@ const Dashboard = () => {
         logout();
       }
     });
+    setCustomer(localStorage.getItem("customer"));
   }, []);
 
   useEffect(() => {
@@ -114,76 +117,27 @@ const Dashboard = () => {
                     />
                   </div>
                 )}
-                <div>
-                  <div className="grid w-60 mx-auto content-center grid-rows-2 gap-4 ">
-                    <div>
-                      <img src={logo} alt="logo" width="400" />
-                    </div>
-                    <div className="text-center">
-                      <h2 className="text-xl mb-4 font-semibold text-gray-500">
-                        Agrega un nuevo cliente
-                      </h2>
-                      <Modal />
+                {customer ? (
+                   <EditCustomerPage customer={customer}/>
+                ) : (
+                  <div>
+                    <div className="grid w-60 mx-auto content-center grid-rows-2 gap-4 ">
+                      <div>
+                        <img src={logo} alt="logo" width="400" />
+                      </div>
+                      <div className="text-center">
+                        <h2 className="text-xl mb-4 font-semibold text-gray-500">
+                          Agrega un nuevo cliente
+                        </h2>
+                        <Modal />
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         </section>
-        {/* <footer className="relative bg-gray-100 ">
-          <div className="container mx-auto px-4 ">
-            <div className="flex flex-wrap sm:text-left pt-8 sm:pl-8 text-center lg:text-left">
-              <div className="w-full md:w-6/12 lg:px-4">
-                <h4 className="text-lg font-semibold  text-gray-800">
-                  Farmacias San Gregorio
-                </h4>
-                <h5 className="text-xs mt-0 mb-2  text-gray-800">
-                  SISTEMA DE GESTIÓN DE CLIENTES
-                </h5>
-              </div>
-              <div className="w-full pt-2 md:pt-0 md:w-6/12 pl-4">
-                <div className="flex  items-top mb-6">
-                  <div className="w-full pl-4 ml-auto">
-                    <h4 className="text-xs font-semibold  text-gray-800">
-                      DEVELOPING
-                    </h4>
-                    <h5 className="text-xs mt-0 mb-2  text-gray-800">
-                      Jose Alberto León Alarcón
-                    </h5>
-                  </div>
-                  <div className="w-full px-4">
-                    <h4 className="text-xs font-semibold  text-gray-800">
-                      CONTENT
-                    </h4>
-                    <h5 className="text-xs mt-0 mb-2  text-gray-800">
-                      Software para la gestión de clientes
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr className=" border-blueGray-300" />
-            <div className="flex py-2 flex-wrap items-center md:justify-between justify-center">
-              <div className="w-full md:w-4/12 px-4 mx-auto text-center">
-                <div className="text-sm  text-gray-800 py-1">
-                  Copyright © <span id="get-current-year">2022</span>
-                  <a
-                    href="https://www.creative-tim.com/product/notus-js"
-                    className="text-blueGray-500 hover:text-gray-800"
-                    target="_blank"
-                    rel="noreferrer"
-                  />
-                  <a
-                    href="https://www.creative-tim.com?ref=njs-profile"
-                    className="text-blueGray-500 hover:text-blueGray-800"
-                  ></a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer> */}
       </div>
     </>
   );
