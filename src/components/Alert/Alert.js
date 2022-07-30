@@ -33,3 +33,16 @@ export const mostrarExito = async (titulo, text, icon) => {
     return result_data;
 
 }
+
+export const mostrarAlertaEliminar = async (tema) => {
+  var value = await Swal.fire(
+      {
+          title: `Eliminar ${tema}`,
+          icon: "warning",
+          text: "¿Estas seguro que deseas eliminar?",
+          confirmButtonText: "Continuar",
+          showCancelButton: true,
+      }
+  )
+  return value.isConfirmed;
+}

@@ -1,244 +1,135 @@
-import React from "react";
-import logo from "../../Resource/user.png";
+import React, { createRef } from "react";
 import { logout } from "../../api/User";
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
 
-const Navbar = (props) => {
-  return (
-    <nav class="
-  relative
-  w-full
-  flex flex-wrap
-  items-center
-  justify-between
-  py-4
-  bg-gray-100
-  text-gray-500
-  hover:text-gray-700
-  focus:text-gray-700
-  shadow-lg
-  navbar navbar-expand-lg navbar-light
-  ">
-  <div class="container-fluid w-full flex flex-wrap items-center justify-between px-6">
-  <button class="
-      navbar-toggler
-      text-gray-500
-      border-0
-      hover:shadow-none hover:no-underline
-      py-2
-      px-2.5
-      bg-transparent
-      focus:outline-none focus:ring-0 focus:shadow-none focus:no-underline
-    " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars"
-    class="w-6" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-    <path fill="currentColor"
-      d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z">
-    </path>
-  </svg>
-  </button>
-  <div class="collapse navbar-collapse flex-grow items-center" id="navbarSupportedContent">
-  <a class="
-        flex
-        items-center
-        text-gray-900
-        hover:text-gray-900
-        focus:text-gray-900
-        mt-2
-        lg:mt-0
-        mr-1
-      " href="#">
-    <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" style="height: 15px" alt=""
-      loading="lazy" />
-  </a>
-  <ul class="navbar-nav flex flex-col pl-0 list-style-none mr-auto">
-    <li class="nav-item p-2">
-      <a class="nav-link text-gray-500 hover:text-gray-700 focus:text-gray-700 p-0" href="#">Dashboard</a>
-    </li>
-    <li class="nav-item p-2">
-      <a class="nav-link text-gray-500 hover:text-gray-700 focus:text-gray-700 p-0" href="#">Team</a>
-    </li>
-    <li class="nav-item p-2">
-      <a class="nav-link text-gray-500 hover:text-gray-700 focus:text-gray-700 p-0" href="#">Projects</a>
-    </li>
-  </ul>
-  </div>
-  <div class="flex items-center relative">
-  <a class="text-gray-500 hover:text-gray-700 focus:text-gray-700 mr-4" href="#">
-    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="shopping-cart"
-      class="w-4" role="img" xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 576 512">
-      <path fill="currentColor"
-        d="M528.12 301.319l47.273-208C578.806 78.301 567.391 64 551.99 64H159.208l-9.166-44.81C147.758 8.021 137.93 0 126.529 0H24C10.745 0 0 10.745 0 24v16c0 13.255 10.745 24 24 24h69.883l70.248 343.435C147.325 417.1 136 435.222 136 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-15.674-6.447-29.835-16.824-40h209.647C430.447 426.165 424 440.326 424 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-22.172-12.888-41.332-31.579-50.405l5.517-24.276c3.413-15.018-8.002-29.319-23.403-29.319H218.117l-6.545-32h293.145c11.206 0 20.92-7.754 23.403-18.681z">
-      </path>
-    </svg>
-  </a>
-  <div class="dropdown relative">
-    <a class="
-          text-gray-500
-          hover:text-gray-700
-          focus:text-gray-700
-          mr-4
-          dropdown-toggle
-          hidden-arrow
-          flex items-center
-        " href="#" id="dropdownMenuButton1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bell"
-        class="w-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-        <path fill="currentColor"
-          d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z">
-        </path>
-      </svg>
-      <span class="text-white bg-red-700 absolute rounded-full text-xs -mt-2.5 ml-2 py-0 px-1.5">1</span>
-    </a>
-    <ul class="
-      dropdown-menu
-      min-w-max
-      absolute
-      hidden
-      bg-white
-      text-base
-      z-50
-      float-left
-      py-2
-      list-none
-      text-left
-      rounded-lg
-      shadow-lg
-      mt-1
-      hidden
-      m-0
-      bg-clip-padding
-      border-none
-      left-auto
-      right-0
-    " aria-labelledby="dropdownMenuButton1">
-      <li>
-        <a class="
-          dropdown-item
-          text-sm
-          py-2
-          px-4
-          font-normal
-          block
-          w-full
-          whitespace-nowrap
-          bg-transparent
-          text-gray-700
-          hover:bg-gray-100
-        " href="#">Action</a>
-      </li>
-      <li>
-        <a class="
-          dropdown-item
-          text-sm
-          py-2
-          px-4
-          font-normal
-          block
-          w-full
-          whitespace-nowrap
-          bg-transparent
-          text-gray-700
-          hover:bg-gray-100
-        " href="#">Another action</a>
-      </li>
-      <li>
-        <a class="
-          dropdown-item
-          text-sm
-          py-2
-          px-4
-          font-normal
-          block
-          w-full
-          whitespace-nowrap
-          bg-transparent
-          text-gray-700
-          hover:bg-gray-100
-        " href="#">Something else here</a>
-      </li>
-    </ul>
-  </div>
-  <div class="dropdown relative">
-    <a class="dropdown-toggle flex items-center hidden-arrow" href="#" id="dropdownMenuButton2" role="button"
-      data-bs-toggle="dropdown" aria-expanded="false">
-      <img src="https://mdbootstrap.com/img/new/avatars/2.jpg" class="rounded-full"
-        style="height: 25px; width: 25px" alt="" loading="lazy" />
-    </a>
-    <ul class="
-    dropdown-menu
-    min-w-max
-    absolute
-    hidden
-    bg-white
-    text-base
-    z-50
-    float-left
-    py-2
-    list-none
-    text-left
-    rounded-lg
-    shadow-lg
-    mt-1
-    hidden
-    m-0
-    bg-clip-padding
-    border-none
-    left-auto
-    right-0
-  " aria-labelledby="dropdownMenuButton2">
-      <li>
-        <a class="
-        dropdown-item
-        text-sm
-        py-2
-        px-4
-        font-normal
-        block
-        w-full
-        whitespace-nowrap
-        bg-transparent
-        text-gray-700
-        hover:bg-gray-100
-      " href="#">Action</a>
-      </li>
-      <li>
-        <a class="
-        dropdown-item
-        text-sm
-        py-2
-        px-4
-        font-normal
-        block
-        w-full
-        whitespace-nowrap
-        bg-transparent
-        text-gray-700
-        hover:bg-gray-100
-      " href="#">Another action</a>
-      </li>
-      <li>
-        <a class="
-        dropdown-item
-        text-sm
-        py-2
-        px-4
-        font-normal
-        block
-        w-full
-        whitespace-nowrap
-        bg-transparent
-        text-gray-700
-        hover:bg-gray-100
-      " href="#">Something else here</a>
-      </li>
-    </ul>
-  </div>
-  </div>
-  </div>
-</nav>
-  );
-};
+import user from "../../Resource/user.png";
+import logobn from "../../Resource/target.png";
 
+class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.hamburgerBtn = createRef();
+    this.hamburgerItems = createRef();
+  }
+  handleHamburgerButton = () => {
+    this.hamburgerItems.current.classList.toggle("hidden");
+  };
+  classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+  }
+
+  render() {
+    return (
+      <div>
+        <nav className="static bg-indigo-600  shadow  ">
+          <div className="max-w-7xl mx-auto ">
+            <div className="flex items-center justify-between h-16">
+              <div className=" flex items-center">
+                <img src={logobn} width="50" />
+                <a
+                  className="flex-shrink-0 font-semibold text-white uppercase  hover:text-slate-200 px-3 py-2 rounded-md text-sm font-large"
+                  href="/"
+                >
+                  Sistema de Gestión de Clientes
+                </a>
+                <div className="hidden md:block">
+                  <div className=" ml-10 flex items-baseline space-x-4">
+                    <a
+                      className={
+                        this.props.activado === 1
+                          ? "font-semibold text-yellow-400 uppercase  hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                          : "text-white  hover:text-yellow-400  px-3 py-2 rounded-md text-sm font-medium"
+                      }
+                      href="/dashboard"
+                    >
+                      Clientes
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="block">
+                <div className="ml-4 flex items-center md:ml-6"></div>
+              </div>
+              <div className="-mr-2 flex md:hidden">
+                <button
+                  className="text-gray-100  hover:text-yellow-500 inline-flex items-center justify-center p-2 rounded-md focus:outline-none"
+                  id="hamburger"
+                  ref={this.hamburgerBtn}
+                  onClick={this.handleHamburgerButton}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    className="h-8 w-8"
+                    viewBox="0 0 1792 1792"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z"></path>
+                  </svg>
+                </button>
+              </div>
+              <div className="p-2 flex ">
+                <h2 className="tex-sm sm:text-base font-medium py-1 uppercase text-white">
+                  {this.props.usuario.apodo}
+                </h2>
+                <Menu as="div" className="ml-3 relative">
+                  <div>
+                    <Menu.Button className=" flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white">
+                      <span className="sr-only">Open user menu</span>
+                      <img
+                        className="h-8 w-8 "
+                        /* src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" */
+                        src={user}
+                        alt=""
+                      />
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <div
+                            className={this.classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                          >
+                            <button onClick={logout}>Logout</button>
+                          </div>
+                        )}
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              </div>
+            </div>
+          </div>
+          <div className="md:hidden">
+            <div
+              className="px-2 pt-2  pb-3 space-y-1 sm:px-3 hidden"
+              ref={this.hamburgerItems}
+            >
+              <a
+                className="text-gray-100 hover:text-yellow-500 block px-3 py-2 rounded-md text-base font-medium"
+                href="/dashboard"
+              >
+                Clientes
+              </a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    );
+  }
+}
 export default Navbar;

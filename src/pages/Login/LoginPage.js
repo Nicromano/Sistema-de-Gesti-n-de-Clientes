@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo_Farm from "../../Resource/logo-san-gregorio.jpg";
+import logo_Farm from "../../Resource/target.png";
 import { login } from "../../api/User";
 
 import { mostrarAlertaSalir } from "../../components/Alert/Alert";
@@ -106,12 +106,7 @@ const Login = () => {
               </div>
 
               <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  ¿Has olvidado tu contraseña?
-                </a>
+               
               </div>
             </div>
             {loading && (
