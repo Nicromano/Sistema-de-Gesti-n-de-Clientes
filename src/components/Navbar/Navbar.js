@@ -26,7 +26,7 @@ class Navbar extends React.Component {
           <div className="max-w-7xl mx-auto ">
             <div className="flex items-center justify-between h-16">
               <div className=" flex items-center">
-                <img src={logobn} width="50" />
+                <img src={logobn} alt="logo" width="50" />
                 <a
                   className="flex-shrink-0 font-semibold text-white uppercase  hover:text-slate-200 px-3 py-2 rounded-md text-sm font-large"
                   href="/"

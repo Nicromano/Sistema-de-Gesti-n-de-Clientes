@@ -25,6 +25,7 @@ export const login = async (user) => {
 
 export const logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("customer");
   window.location.href = "/";
 };
 export const isExistUser = () => {
@@ -54,7 +55,7 @@ export const getUsers = async () => {
   return null;
 };
 
-export const register = async (user) => {
+export const registerUser = async (user) => {
   user.apellido = "";
   user.cedula = "";
 

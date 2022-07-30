@@ -8,6 +8,9 @@ import logo from "../../Resource/logo.svg";
 import Modal from "../../components/ModalCliente/Modal";
 import Table from "../../components/Table/Table";
 import EditCustomerPage from "../EditCustomerPage/EditCustomerPage";
+
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 const Dashboard = () => {
   const [user, setUser] = useState({});
   const [cargando, setCargando] = useState(true);
@@ -107,7 +110,7 @@ const Dashboard = () => {
             <div>
               {/* table */}
               <div className="grid md:grid-cols-2 h-auto  sm:grid-cols-1 my-4">
-                {!cargando && (
+                {!cargando ? (
                   <div className="shadow-lg bg-white  rounded-lg p-4">
                     <Table
                       name="Clientes actuales"
@@ -116,6 +119,8 @@ const Dashboard = () => {
                       columns={columns}
                     />
                   </div>
+                ): (
+                  <Skeleton count={15} /> 
                 )}
                 {customer ? (
                    <EditCustomerPage customer={customer}/>

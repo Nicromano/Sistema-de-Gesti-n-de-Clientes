@@ -25,7 +25,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 );
 
 const Table = (props) => {
-  const [data, setData] = useState(props.data);
+  const [data] = useState(props.data);
 
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] =

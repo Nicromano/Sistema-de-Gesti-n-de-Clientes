@@ -1,38 +1,32 @@
 import React, { useState } from "react";
 import logo_Farm from "../../Resource/target.png";
 import { login } from "../../api/User";
-
+import { useForm } from "react-hook-form";
 import { mostrarAlertaSalir } from "../../components/Alert/Alert";
 
 const Login = () => {
-  const [user, setUser] = useState({}); /* Estado de Usuario */
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [loading, setLoading] = useState(false); /* Estado cargando */
   const [info, setInfo] =
-    useState(false); /* Estado para mostrar un mensaje sobre la petición */
+    useState(false);
 
-  /* Función asincróna para enviar petición */
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (data) => {
     setLoading(true);
-    const _login = await login(user);
+    const _login = await login(data);
     setLoading(false); //Elimina el estado cargando
     if (_login) window.location.href = "./dashboard";
     else {
       setInfo(true); //Muestra tostada con información para el usuario
-      /* Crea un intervalo de tiempo para la tostada de información luego desaparece */
       setInterval(() => {
-        setInfo(false); //Oculta tostada de información
+        setInfo(false); 
       }, 10000);
     }
   };
-  const handleFormChange = (event) => {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    setUser({
-      ...user,
-      [name]: value,
-    });
-  };
+
   return (
     <>
       <div className="min-h-full flex justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -56,7 +50,7 @@ const Login = () => {
               </a>
             </p>
           </div>
-          <form className="mt-2 space-y-4">
+          <form className="mt-2 space-y-4" onSubmit={handleSubmit(handleFormSubmit)}>
             <div className="form-group mb-4">
               <label
                 htmlFor="usuario"
@@ -66,12 +60,17 @@ const Login = () => {
               </label>
               <input
                 type="text"
+                {...register("usuario", {
+                  required: true,
+                })}
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="usuario"
                 name="usuario"
-                onChange={handleFormChange}
                 placeholder="Enter email"
               />
+              {errors.usuario?.type === "required" && (
+                <span className="text-red-500">Campo requerido</span>
+              )}
             </div>
             <div className="form-group mb-4">
               <label
@@ -83,11 +82,16 @@ const Login = () => {
               <input
                 type="password"
                 name="contraseña"
-                onChange={handleFormChange}
+                {...register("contraseña", {
+                  required: true,
+                })}
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="password"
                 placeholder="Password"
               />
+              {errors.contraseña?.type === "required" && (
+                <span className="text-red-500">Campo requerido</span>
+              )}
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -120,14 +124,11 @@ const Login = () => {
               </div>
             )}
             <div>
-              <button
-                type="button"
-                onClick={handleFormSubmit}
+              <input
+                type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
-                Ingresar
-              </button>
+               value="Ingresar"/>
+                
             </div>
           </form>
         </div>

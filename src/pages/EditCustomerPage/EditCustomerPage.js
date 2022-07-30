@@ -1,12 +1,44 @@
 import React, { useState, useEffect } from "react";
-
+import { useForm } from "react-hook-form";
+import validator from "validator";
+import { iscedula } from "../../helper";
+import { updateCustomer } from "../../api/Customer";
+import { mostrarExito } from "../../components/Alert/Alert";
 const EditCustomerPage = (props) => {
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] = useState({ ...JSON.parse(props.customer) });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
+  const onSubmit = async (data) => {
+    data.id = customer.id;
+    let _customer = await updateCustomer(data);
+    if (_customer) {
+      await mostrarExito(
+        "Cliente actualizado",
+        "El cliente se actualizó correctamente",
+        "success"
+      );
+      closeEdit();
+    } else {
+      await mostrarExito(
+        "Error",
+        "El cliente no se actualizó correctamente",
+        "error"
+      );
+    }
+  };
+  
   useEffect(() => {
-    setCustomer(props.customer);
+    setCustomer({ ...JSON.parse(props.customer) });
   }, [props.customer]);
 
+  const closeEdit = () => {
+    localStorage.removeItem("customer");
+    window.location.reload();
+  };
   return (
     <>
       <div>
@@ -20,11 +52,10 @@ const EditCustomerPage = (props) => {
               </div>
             </div>
             <div>
-              {/* table */}
               <div className="grid md:grid-cols-1 h-auto  sm:grid-cols-1 my-4">
                 <div className="">
                   {customer && (
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                       <div className="form-group mb-4">
                         <label
                           htmlFor="cedula"
@@ -35,11 +66,23 @@ const EditCustomerPage = (props) => {
                         <input
                           type="text"
                           name="cedula"
+                          {...register("cedula", {
+                            required: true,
+                            validate: (value) => iscedula(value),
+                          })}
                           defaultValue={customer.cedula}
                           className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                           id="cedula"
                           placeholder="Ingrese su CI"
                         />
+                        {errors.cedula?.type === "required" && (
+                          <span className="text-red-500">Campo requerido</span>
+                        )}
+                        {errors.cedula?.type === "validate" && (
+                          <span className="text-red-500">
+                            N° cédula incorrecta
+                          </span>
+                        )}
                       </div>
                       <div className="form-group mb-4">
                         <label
@@ -49,13 +92,17 @@ const EditCustomerPage = (props) => {
                           Nombre:
                         </label>
                         <input
-                          value={customer.nombre}
+                          defaultValue={customer.nombre}
                           type="text"
                           name="nombre"
+                          {...register("nombre", { required: true })}
                           className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                           id="nombre"
                           placeholder="Ingrese su nombre"
                         />
+                        {errors.nombre && (
+                          <span className="text-red-500">Campo requerido</span>
+                        )}
                       </div>
                       <div className="form-group mb-4">
                         <label
@@ -67,11 +114,15 @@ const EditCustomerPage = (props) => {
                         <input
                           type="text"
                           name="apellido"
-                          value={customer.apellido}
+                          {...register("apellido", { required: true })}
+                          defaultValue={customer.apellido}
                           className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                           id="apellido"
                           placeholder="Ingrese su apellido"
                         />
+                        {errors.apellido && (
+                          <span className="text-red-500">Campo requerido</span>
+                        )}
                       </div>
                       <div className="form-group mb-4">
                         <label
@@ -82,26 +133,36 @@ const EditCustomerPage = (props) => {
                         </label>
                         <input
                           type="email"
-                          value={customer.correo}
+                          defaultValue={customer.correo}
                           name="correo"
+                          {...register("correo", {
+                            required: true,
+                            validate: (value) => validator.isEmail(value),
+                          })}
                           className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                           id="email"
                           placeholder="Ingrese su correo electrónico"
                         />
+                        {errors.correo?.type === "required" && (
+                          <span className="text-red-500">Campo requerido</span>
+                        )}
+                        {errors.correo?.type === "validate" && (
+                          <span className="text-red-500">No es un correo</span>
+                        )}
                       </div>
                       <div className="flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
                         <button
                           type="button"
+                          onClick={closeEdit}
                           className="inline-block px-6 py-2.5 bg-purple-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-purple-700 hover:shadow-lg focus:bg-purple-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-800 active:shadow-lg transition duration-150 ease-in-out"
                         >
                           Cerrar
                         </button>
-                        <button
-                          type="button"
+                        <input
+                          type="submit"
                           className="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                        >
-                          Guardar cambios
-                        </button>
+                          value="Guardar cambios"
+                        />
                       </div>
                     </form>
                   )}

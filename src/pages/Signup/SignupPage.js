@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import logo_Farm from "../../Resource/target.png";
-import { register } from "../../api/User";
+import { registerUser } from "../../api/User";
+import { useForm } from "react-hook-form";
 
 const Signup = () => {
-  const [user, setUser] = useState({}); /* Estado de Usuario */
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [loading, setLoading] = useState(false); /* Estado cargando */
   const [info, setInfo] =
     useState(false); /* Estado para mostrar un mensaje sobre la petición */
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (data) => {
     setLoading(true);
-    const _register = await register(user);
+    const _register = await registerUser(data);
     setLoading(false); //Elimina el estado cargando
 
     if (_register) window.location.href = "./dashboard";
@@ -22,16 +27,7 @@ const Signup = () => {
     }
   };
 
-  const handleFormChange = (event) => {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    setUser({
-      ...user,
-      [name]: value,
-    });
-  };
-
+ 
   return (
     <>
       <div className="min-h-full flex justify-center py-4 px-4 sm:px-6 lg:px-8">
@@ -55,7 +51,10 @@ const Signup = () => {
               </a>
             </p>
           </div>
-          <form className="mt-2 space-y-4">
+          <form
+            className="mt-2 space-y-4"
+            onSubmit={handleSubmit(handleFormSubmit)}
+          >
             <div className="form-group mb-4">
               <label
                 htmlFor="apodo"
@@ -68,10 +67,14 @@ const Signup = () => {
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="apodo"
                 name="apodo"
-                required
-                onChange={handleFormChange}
-                placeholder="Enter email"
+                {...register("apodo", {
+                  required: true,
+                })}
+                placeholder="Enter username"
               />
+              {errors.apodo?.type === "required" && (
+                <span className="text-red-500">Campo requerido</span>
+              )}
             </div>
             <div className="form-group mb-4">
               <label
@@ -84,10 +87,15 @@ const Signup = () => {
                 type="text"
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="nombre"
+                {...register("nombre", {
+                  required: true,
+                })}
                 name="nombre"
-                onChange={handleFormChange}
                 placeholder="Enter your name"
               />
+               {errors.nombre?.type === "required" && (
+                <span className="text-red-500">Campo requerido</span>
+              )}
             </div>
             <div className="form-group mb-4">
               <label
@@ -100,10 +108,16 @@ const Signup = () => {
                 type="email"
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="correo"
+                {...register("correo", {
+                  required: true,
+                })}
                 name="correo"
-                onChange={handleFormChange}
                 placeholder="Enter email"
+                
               />
+              {errors.correo?.type === "required" && (
+                <span className="text-red-500">Campo requerido</span>
+              )}
             </div>
 
             <div className="form-group mb-4">
@@ -116,20 +130,21 @@ const Signup = () => {
               <input
                 type="password"
                 name="contraseña"
-                onChange={handleFormChange}
+                {...register("contraseña", {
+                  required: true,
+                })}
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="password"
                 placeholder="Password"
               />
+              {errors.contraseña?.type === "required" && (
+                <span className="text-red-500">Campo requerido</span>
+              )}
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-              
-              </div>
+              <div className="flex items-center"></div>
 
-              <div className="text-sm">
-              
-              </div>
+              <div className="text-sm"></div>
             </div>
             {loading && (
               <div className="flex justify-center items-center space-x-2">
@@ -142,14 +157,12 @@ const Signup = () => {
               </div>
             )}
             <div>
-              <button
-                type="button"
-                onClick={handleFormSubmit}
+              <input
+                type="submit"
+                value='Registrar'
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
-                Ingresar
-              </button>
+              />
+                
             </div>
           </form>
         </div>

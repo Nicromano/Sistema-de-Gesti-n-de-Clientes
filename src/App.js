@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login/LoginPage";
 import Signup from "./pages/Signup/SignupPage";
 import Dashboard from "./pages/Dashboard/DashboardPage";
-import EditCustomerPage from "./pages/EditCustomerPage/EditCustomerPage";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="/register" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
 
-          {/*   <Route element={<NotFound />} /> */}
+          <Route path="*" element={<NotFoundPage />} /> 
         </Routes>
       </BrowserRouter>
     </div>
